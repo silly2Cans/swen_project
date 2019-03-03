@@ -35,6 +35,6 @@ def avail_to_db():
 
 while True:
     avail_to_db()
-    time.sleep(5)
+    time.sleep(5*60)
 
 #avail_to_db()
