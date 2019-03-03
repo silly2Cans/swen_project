@@ -30,11 +30,11 @@ def avail_to_db():
     for data in availability:
         data_points = (data.get('number'), data.get('available_bikes'), data.get('available_bike_stands'), 
                        data.get('last_update'), data.get('number')*data.get('last_update'))
-#         engine.execute("INSERT INTO availability_data values (%s,%s,%s,%s,%s)", data_points)
+        #engine.execute("INSERT INTO availability_data values (%s,%s,%s,%s,%s)", data_points)
         print(data_points)
 
-#while True:
-#    avail_to_db()
-#    time.sleep(5)
+while True:
+    avail_to_db()
+    time.sleep(5)
 
-avail_to_db()
+#avail_to_db()
