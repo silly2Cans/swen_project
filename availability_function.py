@@ -13,7 +13,6 @@ import time
 from IPython.display import display
 import mysql
 import pymysql
-import time
 
 CONTRACT = 'Dublin'
 APIKEY = '7b9a350297fefef5f4147e65b6bc3114aacde014'
@@ -34,8 +33,8 @@ def avail_to_db():
 #         engine.execute("INSERT INTO availability_data values (%s,%s,%s,%s,%s)", data_points)
         print(data_points)
 
-while True:
-    avail_to_db()
-    time.sleep(5)
+#while True:
+#    avail_to_db()
+#    time.sleep(5)
 
-#avail_to_db()
+avail_to_db()
