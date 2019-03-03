@@ -11,7 +11,6 @@ import os
 import simplejson as simjson
 import time
 from IPython.display import display
-import mysql
 import pymysql
 
 CONTRACT = 'Dublin'
