@@ -1,0 +1,66 @@
+table, th, td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    text-align: center;
+}
+
+th {
+    background-color: #444;
+    color: white;
+}
+
+table tr:nth-child(odd) {
+    background-color: #f1f1f1; /* I reference code snippets from Practical 6 */
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;   /* I reference code snippets from Practical 6 */
+}
+ h1{
+	font-weight: bold;
+	color: #444;
+	font-size: 30px;
+	text-align: center;
+}
+
+   h2{
+	font-weight: bold;
+	color: black;
+	font-size: 24px;
+	text-align: center;
+}
+
+    p{
+text-align: left;
+margin-bottom: 20px;
+}
+
+#article{
+width:900px;
+float: right;
+font-size: 22px;
+text-align: center;
+margin-bottom: 10px;
+padding-top: 20px;
+
+}
+
+#img{
+float: right;
+margin-bottom: 10px;
+margin-right: 140px;
+
+}
+ .clear {
+	clear: both;
+}
+.prize{
+ text-align: center;
+  margin-top: 10px;
+margin-bottom: 20px;
+}
+
+.table{
+margin: 1px auto;
+text-align: center;
+}
