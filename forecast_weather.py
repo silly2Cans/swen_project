@@ -3,7 +3,7 @@
 import requests
 import json
 from pprint import pprint
-def get_weather():
+def get_forecast():
     """Get the weather data from openweathermap.org API"""
     
     APIURL = "http://api.openweathermap.org/data/2.5/forecast"
@@ -19,5 +19,5 @@ def get_weather():
 #     pprint(data)
 
 
-weather = get_weather()
-pprint(weather)
+forecast = get_forecast()
+pprint(forecast)
