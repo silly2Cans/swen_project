@@ -34,6 +34,7 @@ def avail_to_db():
         engine.execute("INSERT INTO availability1 values (%s,%s,%s,%s,%s,%s)", data_points)
 #         print(data_points)
 #         print("%s,%s,%s,%s,%s,%s" % data_points)
+    engine.dispose()
 
 while True:
     avail_to_db()
