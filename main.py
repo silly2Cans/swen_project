@@ -22,7 +22,7 @@ class Config(object):
 
 app.config.from_object(Config)
 
-
+###open the browser with url: http://127.0.0.1:5000/index,otherwise, it will fail to open
 @app.route("/index", methods=["GET","POST"])
 def index():
     return render_template("index.html")
