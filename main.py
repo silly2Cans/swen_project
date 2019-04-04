@@ -2,6 +2,8 @@ from flask import Flask, current_app,request,render_template,url_for,jsonify,g
 from sqlalchemy import create_engine
 import pymysql
 pymysql.install_as_MySQLdb()
+
+
 # import sys
 # print(sys.modules)
 # import sqlalchemy
@@ -89,10 +91,6 @@ def get_stations():
 #     # //return jsonify(stations=stations)
 #     return jsonify(stations=[stations])
 #
-
-
-
-
 
 if __name__ == '__main__':
     # app.run()
