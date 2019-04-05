@@ -17,7 +17,6 @@ def get_weather():
     return data
 
 
-
 def currentWeather():
     weather = get_weather()
     dd=weather['weather']
@@ -30,6 +29,7 @@ def currentWeather():
     dd1['windspeed']=weather['wind']['speed']
     del dd1['main']
     dd1=json.dumps(dd1)
+    # dd1=json.loads(dd1)
     # print(dd1)
     # print(type(dd1))
     return dd1
