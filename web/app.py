@@ -41,6 +41,7 @@ def station(station_id):
                                         WHERE stationNUM = {})""".format(station_id))
     for row in rows:
         li.append(dict(row))
+    engine.dispose()
     return jsonify(lateststationdata=li)
 
 
@@ -59,6 +60,7 @@ def get_stations():
     rows = engine.execute("SELECT * FROM stations1")
     for row in rows:
         li.append(dict(row))
+    engine.dispose()
     return jsonify(available=li)
 
 
@@ -69,6 +71,7 @@ def get_bikestands():
     rows = engine.execute("SELECT name, bike_stands FROM stations1")
     for row in rows:
         li.append(dict(row))
+    engine.dispose()
     return jsonify(available=li)
 
 
@@ -82,6 +85,7 @@ def get_station_occupancy_timeline(station_id):
     sample = '1D'
     occupancy = df["available_bike_stands"].resample(sample).mean()
     availability = df['available_bikes'].resample(sample).mean()
+    engine.dispose()
     return jsonify(occupancy=occupancy.to_json(), availability=availability.to_json())
 
 # --> This version actually works but won't take arguments...
@@ -107,6 +111,7 @@ def get_station_occupancy_timeline_byName(station_id):
     sample = '1D'
     occupancy = df["available_bike_stands"].resample(sample).mean()
     availability = df['available_bikes'].resample(sample).mean()
+    engine.dispose
     return jsonify(occupancy=occupancy.to_json(), availability=availability.to_json())
 
 if __name__ == "__main__":
