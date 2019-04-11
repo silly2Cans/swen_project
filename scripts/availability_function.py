@@ -17,7 +17,7 @@ import pymysql
 CONTRACT = 'Dublin'
 APIKEY = '7b9a350297fefef5f4147e65b6bc3114aacde014'
 STATIONS = 'https://api.jcdecaux.com/vls/v1/stations'
-DBURL = 'swen-db.cakbys7wmjxf.eu-west-1.rds.amazonaws.com'
+DBURL = 'dublin-bikes-db-restored-small.cakbys7wmjxf.eu-west-1.rds.amazonaws.com'
 PORT = '3306'
 DB = 'dublin_bikes'
 USER = 'swen_main_'

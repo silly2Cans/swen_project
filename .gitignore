@@ -1,0 +1,13 @@
+# Add filepaths to this file for git to ignore
+# This file should be in the same directory as the .git directory
+# This file is not added to .git either, so others don't know what you're hiding
+
+# config files
+config.py
+
+# Compiled
+__pycache__/
+
+# ref files
+ref.txt
+
