@@ -16,7 +16,7 @@ import pymysql
 CONTRACT = 'Dublin'
 APIKEY = '7b9a350297fefef5f4147e65b6bc3114aacde014'
 STATIONS = 'https://api.jcdecaux.com/vls/v1/stations'
-DBURL = 'swen-db.cakbys7wmjxf.eu-west-1.rds.amazonaws.com'
+DBURL = 'dublin-bikes-db-restored-small.cakbys7wmjxf.eu-west-1.rds.amazonaws.com'
 PORT = '3306'
 DB = 'dublin_bikes'
 USER = 'swen_main_'
@@ -36,8 +36,10 @@ def avail_to_db():
 #         print("%s,%s,%s,%s,%s,%s" % data_points)
     engine.dispose()
 
-while True:
-    avail_to_db()
-    time.sleep(5*60)
+
+if __name__ == "__main__":
+    while True:
+        avail_to_db()
+        time.sleep(5*60)
 
 #avail_to_db()

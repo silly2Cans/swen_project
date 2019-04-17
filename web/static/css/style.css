@@ -1,10 +1,11 @@
+
 html, body {
     background-color: #212121;
     height: 100%;
     margin: 0;
     padding-left: 10px;
     padding-right: 10px;
-    font-family: Verdana, sans-serif;
+    font-family: 'dejavu-sans-monobook', sans-serif;
     font-weight: bold;
 }
 
@@ -15,11 +16,13 @@ html, body {
     top: 0;
     left: 25px;
     right: 25px;
-    background-color: #a2d121;
+    background-color: #639ddd;
     color: #212121;
     font-size: 15pt;
     text-align: center; 
     padding: 10px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }
 
 /*
@@ -37,7 +40,7 @@ html, body {
 #map {
     height: 55%;
     margin-top: 0px;
-    border: solid 5px #a2d121;
+    border: solid 5px #639ddd;
 }
 
 #infowindow {
@@ -50,11 +53,28 @@ html, body {
     padding-bottom: 5px;
     height: auto;
     margin-top: 0;
-    background-color: #a2d121;
+    background-color: #639ddd;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    
+    /*flexbox*/
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-flow: wrap;
+    
+}
+
+.box {
+    width: 30%;
+    height: auto;
+    background-color: #639ddd;
+    margin: 20px;
+    box-sizing: border-box;
 }
 
 #charts > p {
     padding: 5px;
     margin: 0;
-    color: #212121
+    color: #3f99ff;
 }

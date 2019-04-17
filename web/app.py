@@ -74,7 +74,7 @@ def get_bikestands():
     engine.dispose()
     return jsonify(available=li)
 
-
+# Retrieve by station ID (number)
 @app.route("/sot/<int:station_id>")
 def get_station_occupancy_timeline(station_id):
     engine = get_db()
@@ -88,19 +88,8 @@ def get_station_occupancy_timeline(station_id):
     engine.dispose()
     return jsonify(occupancy=occupancy.to_json(), availability=availability.to_json())
 
-# --> This version actually works but won't take arguments...
-# @app.route("/station_occupancy_timeline")
-# def get_station_occupancy_timeline():
-#     engine = get_db()
-#     df = pd.read_sql_query("select * from availability1 where stationNUM = 65", engine)
-#                            # params={"num": station_id})
-#     df['last_update_date'] = pd.to_datetime(df["last_update"], unit='ms', origin="unix")
-#     df.set_index('last_update_date', inplace=True)
-#     sample = '1h'
-#     occupancy = df["available_bike_stands"].resample(sample).mean()
-#     availability = df['available_bikes'].resample(sample).mean()
-#     return jsonify(occupancy=occupancy.to_json(), availability=availability.to_json())
 
+# Retrieve by station name
 @app.route("/sot/<string:station_name>")
 def get_station_occupancy_timeline_byName(station_id):
     engine = get_db()
@@ -111,8 +100,9 @@ def get_station_occupancy_timeline_byName(station_id):
     sample = '1D'
     occupancy = df["available_bike_stands"].resample(sample).mean()
     availability = df['available_bikes'].resample(sample).mean()
-    engine.dispose
+    engine.dispose()
     return jsonify(occupancy=occupancy.to_json(), availability=availability.to_json())
+
 
 if __name__ == "__main__":
     app.run(debug=True)

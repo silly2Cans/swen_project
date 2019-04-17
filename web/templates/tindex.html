@@ -2,10 +2,39 @@
 {% block index %}
 
 <div id="map"></div>
+
+<div id="charts">
+    <div class="box" id="box1"></div>
+    <div class="box" id="box2"></div>
+    <div class="box" id="box3"></div>
+</div>
+
+
+
+<script type="text/javascript">
+    //Vars global must remain in existence when the functions finish execution
+    var map;
+
+    function initMap() {
+        //Var local is only needed to get ROOT URL for the showStationMarkers() functions
+        var ROOT = window.location.origin;
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {
+                lat: 53.346763,
+                lng: -6.2568436
+            },
+            radius: 10,
+            zoom: 13
+        });
+        //Place markers on the map
+        showStationMarkers(ROOT);
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?{{KEY_ID}}{{GMAPS_KEY}}&callback=initMap" async defer></script>
 <script type="text/javascript">
     // var for tracking infowindow must be globally scoped
     var prev_infowindow = false;
-    
+
     // function invoked to generate markers for stations
     function showStationMarkers(ROOT) {
         // Using jQuery library
@@ -25,90 +54,62 @@
                         map: map,
                         title: st.name,
                         station_number: st.stationNUM
-                        
+
                     });
                     //Create Google maps infowindow
                     var infoWindow = new google.maps.InfoWindow({
-                            content: '<div id="infowindow">'
-                                        + "NAME: " + st.name
-                                        + "<br>"
-                                        + "ADDRESS: " +st.address
-                                        + "<br>"
-                                        + "STATUS: " +st.status
-                                        + '</div>'
-                        });
+                        content: '<div id="infowindow">' +
+                            "NAME: " + st.name +
+                            "<br>" +
+                            "ADDRESS: " + st.address +
+                            "<br>" +
+                            "STATUS: " + st.status +
+                            '</div>'
+                    });
                     //Add event listeners to each marker
                     marker.addListener("click", function() {
                         //Code adapted from ref.txt[1]
                         //Remove previous infowindow
                         if (prev_infowindow) {
                             prev_infowindow.close();
-                        } 
+                        }
                         // Set prev_infowindow to this infowindow
                         prev_infowindow = infoWindow;
                         // Open infowindow on this map marker
                         infoWindow.open(map, marker);
-                         
-                        //Send some info into a html element
-//                        divCharts = document.getElementById("charts");
-            
-                        // Perform query to get data
-                        jQuery.get(ROOT + "/station/" + st.stationNUM, function(data){
-                            console.log(data);
-                            target = document.getElementById("charts");
-                            ob = data["lateststationdata"][0];
-                            
-                            target.innerHTML = "Station Name: " + st.name + "<br><br>"
-                                                + "Available Bikes: " + ob["available_bikes"] + "<br><br>"
-                                                + "Empty Stands: " + ob["available_bike_stands"] + "<br>";
-                            
+
+                        // Perform query to get availability data
+                        jQuery.get(ROOT + "/station/" + st.stationNUM, function(data) {
+                            var target = document.getElementById("box1");
+                            var ob = data["lateststationdata"][0];
+
+                            // time manipulation
+                            console.log("date ob", ob["last_update"]);
+                            var timeOb = new Date(parseInt(ob["last_update"]));
+                            var seconds = "0" + timeOb.getSeconds();
+                            var minutes = "0" + timeOb.getMinutes();
+                            var hours = "0" + timeOb.getHours();
+                            var year = timeOb.getFullYear();
+                            var month = timeOb.getMonth();
+                            var day = "0" + timeOb.getDay();
+                            var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
+                                "Nov", "Dec"
+                            ];
+                            var timestring = hours.slice(-2) + ":" + minutes.slice(-2) + ":" + seconds.slice(-2) +
+                                "<br>Date: " + day.slice(-2) + "/" + months[month] + "/" + year.toString();
+                            console.log(timeOb);
+
+                            target.innerHTML = "Time: " + timestring + "<br><br>" +
+                                "Station Name: " + st.name + "<br><br>" +
+                                "Available Bikes: " + ob["available_bikes"] + "<br><br>" +
+                                "Empty Stands: " + ob["available_bike_stands"] + "<br>";
+
                         })
-                
-//                        jQuery("#charts").load(ROOT + "/station/" + st.stationNUM, function(response, status, xhr){
-//                            
-//                        })
-//                        
-//                         jQuery.post(ROOT + "/station/" + st.stationNUM, function(data, status){
-//                            console.log(data);
-//                        });
-                
-                        // Simple data to div id="charts"
-                        out = "<p>NAME: "
-                            + this.title
-                            + "<br>"
-                            + "STATION NUMBER: "
-                            + this.station_number
-                            + "<br>"
-                            + "AVAILABLE BIKES: "
-                            + "<br></p>"
-                        divCharts.innerHTML = out;
-                        
                     });
                 });
             }
         });
     }
-    
-    //Vars global must remain in existence when the functions finish execution
-    var map;
-    function initMap() {
-        //Var local is only needed to get ROOT URL for the showStationMarkers() functions
-        var ROOT = window.location.origin;
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: {
-                lat: 53.346763,
-                lng: -6.2568436
-            },
-            radius: 10,
-            zoom: 13
-        });
-        //Place markers on the map
-        showStationMarkers(ROOT);
-    }
-    
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?{{KEY_ID}}{{GMAPS_KEY}}&callback=initMap" async defer></script>
-
-<div id="charts"></div>
+</script>>
 
 {% endblock %}
