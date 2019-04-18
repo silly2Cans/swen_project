@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 class Config(object):
     ##this is our  database at aws ec2
-    ##SQLALCHEMY_DATABASE_URI = "mysql://swen_main_:mixednuts@swen-db.cakbys7wmjxf.eu-west-1.rds.amazonaws.com:3306/dublin_bikes"
+    SQLALCHEMY_DATABASE_URI = "mysql://swen_main_:mixednuts@swen-db.cakbys7wmjxf.eu-west-1.rds.amazonaws.com:3306/dublin_bikes"
     ##this is my local database info
     SQLALCHEMY_DATABASE_URI = "mysql://jeff:jeff003@localhost:3306/jack"
     SQLALCHEMY_TRACK_MODIFICATIONS = True

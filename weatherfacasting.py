@@ -10,7 +10,7 @@ import simplejson as simjson
 import time
 # from IPython.display import display
 import pymysql
-
+import main
 def get_forecast():
     """Get the weather data from openweathermap.org API"""
 
@@ -51,23 +51,30 @@ def getdict(num):
 # weather1.update(wind1)
 
 
-DBURL = 'swen-db.cakbys7wmjxf.eu-west-1.rds.amazonaws.com'
-PORT = '3306'
-DB = 'dublin_bikes'
-USER = 'swen_main_'
-PASSWORD = 'mixednuts'
-i=0
-engine = create_engine("mysql+pymysql://{}:{}@{}:{}/{}".format(USER, PASSWORD, DBURL, PORT, DB))
-print(engine)
+# DBURL = 'swen-db.cakbys7wmjxf.eu-west-1.rds.amazonaws.com'
+# PORT = '3306'
+# DB = 'dublin_bikes'
+# USER = 'swen_main_'
+# PASSWORD = 'mixednuts'
+# i=0
+# engine = create_engine("mysql+pymysql://{}:{}@{}:{}/{}".format(USER, PASSWORD, DBURL, PORT, DB))
+# print(engine)
 
 while(i<length):
     data=getdict(i)
     data_points = (data.get('id'),data.get('date'), data.get('temp'), data.get('humidity'),
                    data.get('pressure'),data.get('description'), data.get('icon'), data.get('windspeed'))
-    engine.execute("INSERT INTO weatherforecasting values (%s,%s,%s,%s,%s,%s,%s,%s)", data_points)
+    dat=data.get('date')
+    rows = engine.execute("SELECT COUNT(*) from weatherforecasting where date ="+dat+";")
+    i = i + 1
+    if rows!=0:
+        print("The record at this time is already in the database")
+        continue
+    else:
+        engine.execute("INSERT INTO weatherforecasting values (%s,%s,%s,%s,%s,%s,%s,%s)", data_points)
     #         print(data_points)
     #         print("%s,%s,%s,%s,%s,%s" % data_points)
-    i = i + 1
+
 engine.dispose()
 
 

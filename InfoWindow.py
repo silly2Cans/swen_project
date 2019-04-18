@@ -24,24 +24,24 @@ PASSWORD = 'mixednuts'
 
 def avail_to_db():
     tm = time.time_ns()
-    print(tm)
+    # print(tm)
     f="%Y-%m-%d %H:%M:%S"
     request = requests.get(STATIONS, params={'contract':CONTRACT,'apiKey':APIKEY})
     availability = json.loads(request.text)
     engine = create_engine("mysql+pymysql://{}:{}@{}:{}/{}".format(USER, PASSWORD, DBURL, PORT, DB))
+    engine.execute("DELETE FROM InfoWindow;")
     for data in availability:
         ts=str(data.get('last_update'))
         ts=float(ts[:10]+"."+ts[10:])
         data_points = (data.get('number'), data.get('available_bikes'), data.get('available_bike_stands'),
                        datetime.datetime.fromtimestamp(ts), int(data.get('number')*tm), int(tm))
-        engine.execute("INSERT INTO dynamic values (%s,%s,%s,%s,%s,%s)", data_points)
+        engine.execute("INSERT INTO InfoWindow values (%s,%s,%s,%s,%s,%s)", data_points)
 #         print(data_points)
 #         print("%s,%s,%s,%s,%s,%s" % data_points)
-#     if __name__ == '__main__':
         engine.dispose()
 
-while True:
-    avail_to_db()
-    time.sleep(5*60)
-
-#avail_to_db()
+# while True:
+#     avail_to_db()
+#     time.sleep(5*60)
+#
+avail_to_db()
