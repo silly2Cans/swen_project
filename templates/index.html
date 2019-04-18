@@ -1,45 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-  	<title>Swen_project</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!--google.charts.load("current", {packages: ["corechart"]});-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
 
+    <title>Google Map Of Dublin City</title>
+    <!--<style>-->
+        <!--h1,h3{-->
+            <!--text-align: center;-->
+        <!--}-->
+         <!--p{-->
+            <!--text-align: center;-->
+             <!--color:Black;-->
+             <!--font-size:20px;-->
+             <!--text-align: center;-->
+             <!--font-weight: bold;-->
+
+        <!--}-->
+        <!--.input-container {-->
+        <!--float: left;-->
+        <!--margin-right: 30px;-->
+        <!--}-->
+        <!--.results{-->
+        <!--float: right;-->
+        <!--margin-right: 30px;-->
+        <!--}-->
 
 
-  
-   </head>  
-    
+        <!--#map {-->
+            <!--height: 400px;-->
+            <!--width: 100%;-->
+        <!--}-->
+          <!--#weather {-->
+              <!--margin-top: 20px;-->
+              <!--float: left;-->
+              <!--height: 430px;-->
+              <!--width: 200px;-->
+              <!--border:1px solid #00F;-->
+              <!--background-color: antiquewhite;-->
+              <!--border-radius: 6px;-->
+               <!--font-size: 45px;-->
+                <!--margin-right: 10px;-->
+
+        <!--}-->
+        <!--#description{-->
+            <!--color: Black;-->
+            <!--font-size: 15px;-->
+
+        <!--}-->
+          <!--#myChart {-->
+             <!--/*float: left;*/-->
+             <!--/*margin-right: 10px;*/-->
+             <!--border:1px solid #00F;-->
+             <!--width:430px;-->
+              <!--height:410px;-->
+              <!--margin-top: 20px;-->
+        <!--}-->
+        <!--#myChart1 {-->
+              <!--/*margin-left: 10px;*/-->
+              <!--border:1px solid #00F;-->
+              <!--width:430px;-->
+              <!--height:410px;-->
+               <!--margin-top: 20px;-->
+
+        <!--}-->
+        <!--#container{-->
+            <!--/*width:100%;*/-->
+            <!--height:440px;-->
+            <!--display: block;-->
+
+        <!--}-->
+        <!--#container1{-->
+
+            <!--width:550px;-->
+            <!--height:430px;-->
+            <!--float: left;-->
+        <!--}-->
+        <!--#container2{-->
+            <!--width:550px;-->
+            <!--height:430px;-->
+            <!--float: right;-->
+            <!--margin-right: 20px;-->
+
+        <!--}-->
+
+
+
+        <!--.clear {-->
+            <!--clear: both;-->
+        <!--}-->
+
+    <!--</style>-->
+</head>
 <body>
-<h1>Dublin bikes</h1>
-<div id="article">
-<h2>Awarded for "the greatest benefit to mankind"</h2>
-<p>Between 1901 and 2018, the Nobel Prizes and the Prize in Economic Sciences were awarded 590 times
-	to 935 people and organisations. The Nobel Prize is an international award administered by the
-	Nobel Foundation in Stockholm, Sweden, <a href="{{url_for('bike')}}">Dublin Bike</a>and based on the fortune of Alfred Nobel,Swedish inventor
-	and entrepreneur. In 1968, Sveriges Riksbank established The Sveriges Riksbank Prize in Economic
-	Sciences in Memory of Alfred Nobel, founder of the Nobel Prize. Each prize consists of a medal,
-	a personal diploma, and a cash award.A person or organisation awarded the Nobel Prize is called
-	Nobel Laureate. The word “laureate” refers <a href="{{url_for('maps')}}">Google Maps</a>to being signified by the laurel wreath. In ancient
-	Greece, laurel wreaths were awarded to victors as a sign of honour.Between 1901 and 2018, the Nobel
-	Prizes and the Prize in Economic Sciences were awarded 590 times to 935 people and organizations.
-	With some receiving the Nobel Prize more than once, this makes a total of 904 individuals and 24
-	organizations. Below, you can view the full list of Nobel Prizes and Nobel Laureates.
-	<script src="{{url_for('static',filename='js/index.js')}}"></script>	    </p>
-</div>
 
 
-	<div id="img">
+    <div class="input-container">
 
-	<img src="{{url_for('static',filename='images/Alfred_Nobel.jpg')}}" alt="Alfred Nobel">
-     <h2>Alfred Nobel&nbsp;(1833-1896)</h2>
+    <form action="{{url_for('predict')}}" method="POST">
+    Hour:<br>
+    <input type="text" name="hour">&nbsp;Please enter an integer between 0 and 23<br>
+    Dayofweek:<br>
+      <input type="text" name="dayofweek" >&nbsp;Please enter an integer between 0 and 6<br>
+    Station_ID:<br>
+      <input type="text" name="Station_ID" >&nbsp;Please enter an integer between 2 and 115<br><br>
+      <input type="submit" class="input-info" value="Predict">
+      </form>
 
 	</div>
-    
-     <div class="clear"></div>
+
+    <div class="results">
+
+    <p><b>Prediction of available bikes at Station {{Station_ID}} at this time</b></p>
+    <br><br>
+    <p> Available_bikes = {{ myresult }}</p>
+
+    </div>
+
+ <div class="clear"></div>
 
 
+
+
+
+<h1>Google Map Of Dublin City</h1>
+<div id="map"></div>
+
+<!--<canvas id="myChart" width="100" height="200" ></canvas>-->
+        <div id="container">
+        <div id="weather"></div>
+
+         <div id="container1">
+        <canvas id="myChart"></canvas>
+             </div>
+
+          <div id="container2">
+        <canvas id="myChart1" ></canvas>
+               </div>
+</div>
+
+<!--<canvas id="myChart1" width="100" height="400" ></canvas>-->
+
+<script>
+          google.charts.load('current', {'packages':['corechart', 'bar']});
+
+
+    function initMap() {
+        // Map options
+        var options = {
+            zoom: 13,
+            center: {lat: 53.3498, lng: -6.2603}
+        };
+        // New map
+        var map = new google.maps.Map(document.getElementById('map'), options);
+
+        $.getJSON("http://127.0.0.1:5000/stations", null, function (data) {
+                var stations = data;
+                console.log('stations', stations);
+                stations.forEach(function (station) {
+// console.log(station.name, station.number);
+                    var marker = new google.maps.Marker({
+                        position: {
+                            lat: station.position_lat,
+                            lng: station.position_lon
+                        },
+                        map: map,
+                        title: station.name,
+                        station_number: station.stationNUM
+                    });
+
+
+                      var infoWindow = new google.maps.InfoWindow({
+                           content:"<h1>"+"<italic>" +"Name of Station:" +station.name+"</italic>"+"</h1>"+
+                                   "<h1>" +"StationID:"+station.stationNUM+"</h1>"+
+                                   "<h1>"  +"Bike_Stands:" +station.bike_stands+"</h1>"+
+                                   "<h1 id='et'>" +"Status:" +station.STATUS+"</h1>"+
+                                   "<h1>" +"Last_Update:" +station.last_update+"</h1>"+
+                                   "<h1 id='et'>" +"Available_Bikes:" +station.available_bikes+"</h1>"+
+                                    "<h1>" +"Available_Bike_Stands:" +station.available_bike_stands+"</h1>"
+
+                      });
+
+                      marker.addListener('click', function(){
+                          // document.getElementById(id).html = number_of_bikes
+
+$.ajax({
+    url: "http://127.0.0.1:5000/station_occupancy_weekly/"+ marker.station_number,
+    type: "get",
+    // data: res_json,
+    // dataType: "script",
+    contentType:"text/html",
+    success: function(response) {
+    	var mean_available_bikes = response.mean_available_bikes;
+        var mean_available_stands = response.mean_available_stands;
+
+        console.log("mean_available_bikes",mean_available_bikes);
+        var arr = JSON.parse(mean_available_stands);
+        var arr1 = JSON.parse(mean_available_bikes);
+        arr=arr.available_bike_stands;
+        arr1=arr1.available_bikes;
+           // var wurl="http://openweathermap.org/img/w/";
+           // var out = "";
+           //  out += '<a href="' + wurl + arr.icon + '">' +
+           // //  arr.windspeed + '</a><br>'+ wurl + arr.icon
+           //  ;
+
+
+
+
+
+     // document.getElementById("weather").innerHTML = out;
+        var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx,{
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+            label: 'mean_available_bike_stands by weekday',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [arr.Mon, arr.Tue, arr.Wed, arr.Thurs, arr.Fri, arr.Sat, arr.Sun]
+            // data: [1, 2,3, 4, 5, 6, 7]
+
+        }]
+    },
+
+    // Configuration options go here
+    options: { responsive:true,
+        maintainAspectRatio: false,
+}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // document.getElementById("weather").innerHTML = out;
+        var ctx1 = document.getElementById('myChart1').getContext('2d');
+var chart1 = new Chart(ctx1,{
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+            label: 'mean_available_bikes by weekday',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [arr1.Mon, arr1.Tue, arr1.Wed, arr1.Thurs, arr1.Fri, arr1.Sat, arr1.Sun]
+            // data: [1, 2,3, 4, 5, 6, 7]
+
+        }]
+    },
+
+    // Configuration options go here
+    options: {responsive:true,
+        maintainAspectRatio: false,}
+});
+
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      infoWindow.open(map, marker);
+
+var jqxhr = $.getJSON("http://127.0.0.1:5000/occupancy/" + marker.station_number,
+    function(data) {
+        data = JSON.parse(data.data);
+                 console.log('data', data);
+            var node = document.createElement('div'),
+            infowindow = new google.maps.InfoWindow(),
+
+            chart = new google.visualization.ColumnChart(node);
+            var chart_data = new google.visualization.DataTable();
+            chart_data.addColumn('datetime', 'Time of Day');
+            chart_data.addColumn('number', '#');
+            data.forEach(function(row){
+            chart_data.addRow([new Date(row[0]), row[1]]);
+            });
+            chart.draw(chart_data, options);
+            infowindow.setContent(node);
+            infowindow.open(marker.getMap(), marker);
+            }).fail(function() {
+            console.log( "error" );
+            }) });
+
+
+
+
+
+
+
+                })
+
+        });
+    }
+
+$.ajax({
+    url: "http://127.0.0.1:5000/currentWeather",
+    type: "get",
+    // data: res_json,
+    // dataType: "script",
+    contentType:"text/html",
+    success: function(response) {
+        console.log("Hooray, it worked!");
+        var arr = JSON.parse(response);
+        arr.temp=arr.temp-273.15;
+        arr.temp= Math.round(arr.temp);
+
+           var wurl="http://openweathermap.org/img/w/";
+           var out = "";
+            out += '<img src="' + wurl + arr.icon + '"/>' +
+                '</a><h3 id="description">'+"Current Temperature:"+"<br>"+ arr.temp+"°C"+ "</h3>"+
+                // '</a><h3 id="description">'+ arr.windspeed+ "</h3>"+
+                '</a><h3 id="description">'+"Visibility:"+"<br>"+ arr.visibility+"M"+"</h3>"+
+                '</a><h3 id="description">'+"Pressure:"+"<br>"+ arr.pressure+"hpa"+"</h3>"+
+                '</a><h3 id="description">'+"Humidity:"+"<br>"+ arr.humidity+"%"+"</h3>"+
+                '</a><h3 id="description">'+"Current Weather:"+"<br>"+ arr.description + "</h3>"
+
+            ;
+
+        document.getElementById("weather").innerHTML = out;
+    }
+});
+
+
+//   $(document).ready(function(){
+// $.get("http://127.0.0.1:5000/currentWeather", function(data) {
+//   var res_json = JSON.stringify(data);
+//   var wurl="http://openweathermap.org/img/w/";
+//  $('#weather').html(res_json);
+//
+// })
+//
+// });
+
+
+
+
+
+
+//     var xmlhttp = new XMLHttpRequest();
+// var url = "http://127.0.0.1:5000/currentWeather";
+// xmlhttp.onreadystatechange = function() {
+// if (this.readyState == 4 && this.status == 200) {
+// var myArr = JSON.parse(this.responseText);
+// myFunction(myArr);
+// }
+// };
+// xmlhttp.open("GET", url, true);
+// xmlhttp.send();
+// function myFunction(arr) {
+// var out = "";
+//
+// out += '<a href="' + arr.pressure + '">' +
+// arr.icon + '</a><br>';
+//
+// document.getElementById("weather").innerHTML = out;
+// }
+
+// var jqxhr = $.getJSON("http://127.0.0.1:5000/occupancy/" + marker.station_number,
+// function(data) {
+// data = JSON.parse(data.data);
+// console.log('data', data);
+// var node = document.createElement('div'),
+// infowindow = new google.maps.InfoWindow(),
+// chart = new google.visualization.ColumnChart(node);
+// var chart_data = new google.visualization.DataTable();
+// chart_data.addColumn('datetime', 'Time of Day');
+// chart_data.addColumn('number', '#');
+// _.forEach(data, function(row){
+// chart_data.addRow([new Date(row[0]), row[1]]);
+// })
+// chart.draw(chart_data, options);
+// infowindow.setContent(node);
+// infowindow.open(marker.getMap(), marker);
+// }).fail(function() {
+// console.log( "error" );
+// })
+
+
+
+
+
+// var ctx1 = document.getElementById('myChart1').getContext('2d');
+// var chart = new Chart(ctx1,{
+//     // The type of chart we want to create
+//     type: 'line',
+//
+//     // The data for our dataset
+//     data: {
+//         labels: ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
+//         datasets: [{
+//             label: 'mean_available_bikes by weekday',
+//             backgroundColor: 'rgb(255, 99, 132)',
+//             borderColor: 'rgb(255, 99, 132)',
+//             data: [arr.Mon, arr.Tue, arr.Wed, arr.Thurs, arr.Fri, arr.Sat, arr.Sun]
+//             // data: [1, 2,3, 4, 5, 6, 7]
+//
+//         }]
+//     },
+//
+//     // Configuration options go here
+//     options: {}
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBECarttTbdmMj2zU_9B5xtUvBlYW6bFog&language=en&region=IE&callback=initMap">
+</script>
 
 
 </body>
